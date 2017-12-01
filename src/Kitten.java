@@ -65,10 +65,41 @@ public class Kitten extends Actor
    * 3. If allSetFlag is not set and this Kitten is all set, that is has
    *    one of each item, sends "thx, all set" to the list.
    */
-  public void readMail()
-  {
-    _______________________________________
-    ...
+  public void readMail(){
+
+	  if(!allSet()){
+		  for(String s : myPossessions) {
+			  if(countPossessions(s) < 1) {
+				  super.send(null, s);
+			  }
+		  }
+	  }
+	  
+	  
+	  Message msg = readNextMessage();
+	  String msgType = msg.getText().substring(0, 3);
+	  String needed = msg.getText().substring(5).trim();
+
+	  while(moreMail()) {
+		  switch (msgType) {
+		  
+		  case "need" :
+			  super.announce(needed);
+			  break;
+			  
+		  case "have" :
+			  super.announce(needed);
+			  break;
+		  
+		  case "ship" :
+			  super.send(null, needed);
+			  break;
+		  
+		  default :
+			  break;
+	  
+		  }
+	  }
   }
 
   public String toString()
